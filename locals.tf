@@ -13,7 +13,7 @@ locals {
   # If user provides a location, use that. If not, use the location of the resource group provided.
   location = length(var.location) > 0 ? var.location : (local.rg.location)
 
-  lb_name                = "${local.deployment_id}-loadbalancer"
+  lb_name                = "${local.deployment_id}-lbi"
   lb_frontend_name       = "${local.lb_name}-frontend"
   lb_frontend_proxy_name = "${local.lb_name}-frontend-proxy"
   lb_direct_enable       = var.private_link_enable ? 0 : 1
@@ -32,10 +32,10 @@ locals {
 
   pcaps_storage_enable = var.lifecycle_pcaps_blob_days > 0
   pcaps_name           = lower("${local.deployment_id}-pcaps")
-  # Storage Account must be lowercase letters and numbers only.
+  # Storage Account must be lowercase letters and numbers only and must be < 25 characters.
   pcaps_sa_name = lower(join("", [substr(local.deployment_id, 0, 15), substr(random_uuid.pcap_uuid.result, 0, 4), "pcaps"]))
 
-  data_collection_name = "${local.deployment_id}-datacollect"
+  data_collection_name = "${local.deployment_id}-dcr"
 
   common_tags = {
     deployment_id = local.deployment_id
