@@ -3,13 +3,16 @@ locals {
   vnet_enable   = length(var.vnet_name) == 0
   vnet_name     = local.vnet_enable ? "${local.deployment_id}-vnet" : var.vnet_name
   vnet_rg       = local.vnet_enable ? local.rg : data.azurerm_resource_group.vnet_rg_existing[0]
+  vnet_rg_name  = local.vnet_enable ? local.rg.name : var.vnet_rg
   vnet          = local.vnet_enable ? azurerm_virtual_network.vnet_new[0] : data.azurerm_virtual_network.vnet_existing[0]
+  vnet_same_rg  = local.vnet_rg_name == local.rg_name # Use names since id's require data resources which can't be used with count.
   # If we are generating a new VNet, we must be generating a new subnet. Otherwise, we may be using or generating a new subnet.
   subnet_enable = local.vnet_enable ? true : length(var.subnet_name) == 0
   subnet        = local.subnet_enable ? azurerm_subnet.vsensor_subnet[0] : data.azurerm_subnet.vsensor_subnet_existing[0]
   vmss_name     = "${local.deployment_id}-vsensor-vmss"
   rg_enable     = length(var.rg_name) == 0
   rg            = local.rg_enable ? azurerm_resource_group.rg[0] : data.azurerm_resource_group.rg_existing[0]
+  rg_name       = local.rg_enable ? "${local.deployment_id}-rg" : var.rg_name
   # If user provides a location, use that. If not, use the location of the resource group provided.
   location = length(var.location) > 0 ? var.location : (local.rg.location)
 

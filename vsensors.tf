@@ -89,6 +89,8 @@ resource "azurerm_virtual_machine_scale_set_extension" "vsensor_install" {
     azurerm_subnet_service_endpoint_storage_policy.pcaps_service_endpoint_policy,
     azurerm_role_assignment.pcaps_role_blob_contrib,
     azurerm_role_assignment.pcaps_role_storage_contrib,
+    azurerm_role_assignment.vsensor_role_assign,
+    azurerm_role_assignment.vsensor_role_assign_vnet,
     azurerm_storage_account_network_rules.pcaps_storage_network
   ]
   name                         = "DarktraceVSensorInstaller"
@@ -171,4 +173,34 @@ resource "azurerm_monitor_autoscale_setting" "vmss_autoscale" {
     look_ahead_time = "PT5M"
   }
   tags = local.all_tags
+}
+
+resource "azurerm_role_definition" "vsensor_role" {
+  name        = "${local.vmss_name} vSensor Role"
+  scope       = local.rg.id
+  description = "Allows Darktrace vSensor to discover network properties for cloud tracking features."
+  permissions {
+    actions = [
+      "Microsoft.Compute/virtualMachines/read",
+      "Microsoft.Compute/virtualMachineScaleSets/read",
+      "Microsoft.Network/virtualNetworks/read",
+      "Microsoft.Network/networkInterfaces/read"
+    ]
+  }
+  assignable_scopes = local.vnet_same_rg ? [local.rg.id] : [local.rg.id, local.vnet_rg.id]
+}
+
+resource "azurerm_role_assignment" "vsensor_role_assign" {
+  scope                = local.rg.id
+  role_definition_name = azurerm_role_definition.vsensor_role.name
+  principal_id         = azurerm_linux_virtual_machine_scale_set.vsensor_vmss.identity[0].principal_id
+  description          = "Allow vSensor to collect Darktrace / Cloud tracking metadata on the vSensor VNet."
+}
+
+resource "azurerm_role_assignment" "vsensor_role_assign_vnet" {
+  count                = local.vnet_same_rg ? 0 : 1
+  scope                = local.vnet_rg.id
+  role_definition_name = azurerm_role_definition.vsensor_role.name
+  principal_id         = azurerm_linux_virtual_machine_scale_set.vsensor_vmss.identity[0].principal_id
+  description          = "Allow vSensor to collect Darktrace / Cloud tracking metadata on the vSensor VNet in a different resource group."
 }

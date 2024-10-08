@@ -37,7 +37,7 @@ variable "vnet_name" {
 
 variable "vnet_rg" {
   type        = string
-  description = "The Resource Group the existing Virtual Network is deployed in. Default is same RG."
+  description = "The Resource Group name that the existing Virtual Network is deployed in."
   default     = null
 }
 

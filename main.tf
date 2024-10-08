@@ -10,7 +10,7 @@ data "azurerm_resource_group" "rg_existing" {
 # Create a new resource group if none provided.
 resource "azurerm_resource_group" "rg" {
   count = local.rg_enable ? 1 : 0
-  name  = "${local.deployment_id}-rg"
+  name  = local.rg_name
   # Can't use local.location here as it would be a cycle. If we are creating a resource group, customer must provide the location.
   location = length(var.location) > 0 ? var.location : "Invalid Configuration"
 }
@@ -29,7 +29,7 @@ check "existing_vnet_with_resource_group" {
 
 check "resource_location" {
   assert {
-    condition     = local.vnet_enable ? true : data.azurerm_virtual_network.vnet_existing[0].location == local.location
+    condition     = local.vnet_enable ? true : data.azurerm_virtual_network.vnet_existing[0].location == replace(lower(local.location), " ", "")
     error_message = "Existing VNet must be in same location as the new resources."
   }
 }
