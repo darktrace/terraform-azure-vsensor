@@ -1,5 +1,5 @@
 resource "azurerm_monitor_data_collection_rule" "vsensor_data_collection" {
-  name                = "${local.data_collection_name}-rule"
+  name                = local.data_collection_name
   location            = local.location
   resource_group_name = local.rg.name
   description         = "Collect metrics from vSensor Scale Set"
@@ -66,14 +66,14 @@ resource "azurerm_monitor_data_collection_rule" "vsensor_data_collection" {
 }
 
 resource "azurerm_monitor_data_collection_rule_association" "vsensor_data_collection_assoc" {
-  name                    = "${local.data_collection_name}-rule-assoc"
+  name                    = "${local.data_collection_name}-assoc"
   target_resource_id      = azurerm_linux_virtual_machine_scale_set.vsensor_vmss.id
   description             = "Association of data collection rule. Deleting this association will break the data collection for this virtual machine."
   data_collection_rule_id = azurerm_monitor_data_collection_rule.vsensor_data_collection.id
 }
 
 resource "azurerm_log_analytics_workspace" "vsensor_logs" {
-  name                            = "${local.deployment_id}-workspace"
+  name                            = "${local.deployment_id}-log"
   location                        = local.location
   resource_group_name             = local.rg.name
   sku                             = "PerGB2018"

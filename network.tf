@@ -17,7 +17,7 @@ data "azurerm_virtual_network" "vnet_existing" {
 
 resource "azurerm_public_ip" "natgw_public_ip" {
   count               = var.nat_gw_enable ? 1 : 0
-  name                = "${local.deployment_id}-natgw-public-ip"
+  name                = "${local.deployment_id}-ng-pip"
   location            = local.location
   resource_group_name = local.rg.name
   allocation_method   = "Static"
@@ -28,7 +28,7 @@ resource "azurerm_public_ip" "natgw_public_ip" {
 
 resource "azurerm_nat_gateway" "natgw" {
   count                   = var.nat_gw_enable ? 1 : 0
-  name                    = "${local.deployment_id}-natgw"
+  name                    = "${local.deployment_id}-ng"
   location                = local.location
   resource_group_name     = local.rg.name
   sku_name                = "Standard"

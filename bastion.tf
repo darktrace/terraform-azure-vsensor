@@ -10,7 +10,7 @@ resource "azurerm_subnet" "bastion_subnet" {
 resource "azurerm_public_ip" "bastion_public_ip" {
   count = var.bastion_enable ? 1 : 0
 
-  name                = "${local.deployment_id}-bastion-public-ip"
+  name                = "${local.deployment_id}-bas-pip"
   location            = local.location
   resource_group_name = local.rg.name
   allocation_method   = "Static"
@@ -22,7 +22,7 @@ resource "azurerm_public_ip" "bastion_public_ip" {
 resource "azurerm_bastion_host" "bastion" {
   count = var.bastion_enable ? 1 : 0
 
-  name                = "${local.deployment_id}-bastion"
+  name                = "${local.deployment_id}-bas"
   location            = local.location
   resource_group_name = local.rg.name
   copy_paste_enabled  = true

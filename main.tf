@@ -1,5 +1,4 @@
-data "azurerm_subscription" "subscription" {
-}
+data "azurerm_subscription" "subscription" {}
 
 # If an existing resource group has been provided, get it.
 data "azurerm_resource_group" "rg_existing" {

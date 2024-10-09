@@ -1,7 +1,7 @@
 resource "azurerm_private_link_service" "ossensor_private_link" {
   count = var.private_link_enable ? 1 : 0
 
-  name                = "${local.deployment_id}-privatelink"
+  name                = "${local.deployment_id}-pl"
   location            = local.location
   resource_group_name = local.rg.name
   nat_ip_configuration {
