@@ -54,7 +54,7 @@ resource "azurerm_storage_management_policy" "pcaps_storage_policy" {
     enabled = true
     filters {
       blob_types   = ["blockBlob"]
-      prefix_match = ["${local.pcaps_name}/chronicle/data/"]
+      prefix_match = ["${local.pcaps_name}/chronicle/data/", "${local.pcaps_name}/chronicle/index/bundle/"]
     }
     actions {
       base_blob {
