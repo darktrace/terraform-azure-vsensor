@@ -1,7 +1,6 @@
 # Used in locals.tf to rename storage account UUID since you can't
 # recreate a new storage account with the same name as an old one.
-resource "random_uuid" "pcap_uuid" {
-}
+resource "random_uuid" "pcap_uuid" {}
 
 # Ignore network_rules being missing causing critical, it is separate below
 # It needs to be separate due to a cycle with virtual_network_subnet_ids
@@ -68,11 +67,11 @@ resource "azurerm_storage_management_policy" "pcaps_storage_policy" {
 resource "azurerm_subnet_service_endpoint_storage_policy" "pcaps_service_endpoint_policy" {
   count = local.pcaps_storage_enable ? 1 : 0
 
-  name                = "${local.pcaps_name}-service-endpoint"
+  name                = "${local.pcaps_name}-se"
   location            = local.location
   resource_group_name = local.rg.name
   definition {
-    name              = "${local.pcaps_name}-service-endpoint-definition"
+    name              = "${local.pcaps_name}-se-definition"
     service           = "Microsoft.Storage"
     service_resources = [azurerm_storage_account.pcaps_storage_account[0].id]
   }
