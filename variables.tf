@@ -121,7 +121,7 @@ variable "terraform_cidrs" {
 variable "instance_size" {
   type        = string
   description = "The VM size. Check the Darktrace customer portal for more information about the vSensor Virtual Hardware requirements."
-  default     = "Standard_D2_v3"
+  default     = "Standard_D2s_v3"
 }
 
 variable "min_size" {

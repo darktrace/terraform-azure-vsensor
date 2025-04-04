@@ -66,8 +66,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "vsensor_vmss" {
   secure_boot_enabled = false
   source_image_reference {
     publisher = "canonical"
-    offer     = "0001-com-ubuntu-server-focal"
-    sku       = "20_04-lts"
+    offer     = "ubuntu-24_04-lts"
+    sku       = "server"
     version   = "latest"
   }
   tags  = local.all_tags

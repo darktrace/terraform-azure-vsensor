@@ -73,7 +73,7 @@ https://customerportal.darktrace.com/product-guides/main/vsensor-requirements
 Various recommended sizes have been provided below, from small burstable CPU sizes for small levels of traffic to large 32 core sizes for high levels of traffic:
 
 * Standard_B2ms
-* Standard_D2_v3
+* Standard_D2s_v3
 * Standard_D4_v3
 * Standard_D8_v3
 * Standard_D8s_v5
@@ -169,7 +169,7 @@ module "vsensors" {
 
   terraform_cidrs = ["1.2.3.4"]
 
-  instance_size = "Standard_D2_v3"
+  instance_size = "Standard_D2s_v3"
   min_size      = 1
   max_size      = 5
 
@@ -235,7 +235,7 @@ module "vsensors" {
   ssh_cidrs       = ["10.100.1.5"]
   terraform_cidrs = ["1.2.3.4"]
 
-  instance_size = "Standard_D2_v3"
+  instance_size = "Standard_D2s_v3"
   min_size      = 1
   max_size      = 5
 
@@ -335,7 +335,7 @@ No modules.
 | <a name="input_instance_host_name"></a> [instance\_host\_name](#input\_instance\_host\_name) | The FQDN or IP of the Darktrace master instance (virtual/physical). | `string` | n/a | yes |
 | <a name="input_instance_port"></a> [instance\_port](#input\_instance\_port) | Connection port between vSensor and the Darktrace Master instance. | `number` | `443` | no |
 | <a name="input_instance_proxy"></a> [instance\_proxy](#input\_instance\_proxy) | (Optional) A proxy that should be specified in the format http://user:pass@hostname:port. | `string` | `""` | no |
-| <a name="input_instance_size"></a> [instance\_size](#input\_instance\_size) | The VM size. Check the Darktrace customer portal for more information about the vSensor Virtual Hardware requirements. | `string` | `"Standard_D2_v3"` | no |
+| <a name="input_instance_size"></a> [instance\_size](#input\_instance\_size) | The VM size. Check the Darktrace customer portal for more information about the vSensor Virtual Hardware requirements. | `string` | `"Standard_D2s_v3"` | no |
 | <a name="input_lifecycle_pcaps_blob_days"></a> [lifecycle\_pcaps\_blob\_days](#input\_lifecycle\_pcaps\_blob\_days) | Number of days to retain captured packets in Azure Blob Storage. Longer retention will increase storage costs. Set to 0 to disable PCAP storage. | `number` | `7` | no |
 | <a name="input_location"></a> [location](#input\_location) | Location for all resources. Leave blank for Resource Group location. | `string` | `""` | no |
 | <a name="input_max_size"></a> [max\_size](#input\_max\_size) | The maximum number of vSensors to be deployed by auto-scaling during high traffic. | `number` | `5` | no |
